@@ -8,5 +8,7 @@ namespace WalletApp.Abstractions.Services
 {
     public interface ITransactionService
     {
+        public Task<double?> ConvertCurrency(string currencyToConvert, double amount);
+
     }
 }
