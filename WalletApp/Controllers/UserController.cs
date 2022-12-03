@@ -19,6 +19,18 @@ namespace WalletApp.Controllers
             _userService = userService;
         }
 
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(UserDTO user)
+        {
+
+            var register = await _userService.Register(user);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(register);
+        }
+
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
