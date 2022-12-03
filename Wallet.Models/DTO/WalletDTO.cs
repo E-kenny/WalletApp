@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WalletApp.Models.Entities;
 
-namespace WalletApp.Models.Entities
+namespace WalletApp.Models.DTO
 {
-    public class Wallet
+    public class WalletDTO
     {
         public int Id { get; set; }
         public string UserId { get; set; }
@@ -14,6 +15,5 @@ namespace WalletApp.Models.Entities
         //public string SecurityKey { get; set; }
         public decimal Balance { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
-        public User User { get; set; }
     }
 }
