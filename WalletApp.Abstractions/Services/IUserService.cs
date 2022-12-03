@@ -10,5 +10,7 @@ namespace WalletApp.Abstractions.Services
     public interface IUserService
     {
         public Task<object> LoginAsync(LoginModel model);
+
+        public Task<string> Register(UserDTO user);
     }
 }
