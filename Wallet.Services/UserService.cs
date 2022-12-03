@@ -84,6 +84,10 @@ namespace WalletApp.Services
 
         }
 
+        public Task<IEnumerable<WalletDTO>> GetListOfWallets(Guid Id)
+        {
+            return null;
+        }
 
 
 

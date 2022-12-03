@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WalletApp.Abstractions.Services;
 
 namespace WalletApp.Controllers
 {
@@ -7,7 +8,7 @@ namespace WalletApp.Controllers
     [ApiController]
     public class WalletController : ControllerBase
     {
-        public WalletController()
+        public WalletController(IWalletService walletService)
         {
 
         }

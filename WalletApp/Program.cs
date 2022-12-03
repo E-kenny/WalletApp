@@ -9,9 +9,8 @@ using WalletApp.Models.Entities;
 using WalletApp.Services;
 using NLog;
 using NLog.Web;
-
-
-
+using WalletApp.Abstractions.Repositories;
+using WalletApp.Infrastructure.Repository;
 
 namespace WalletApp
 {
@@ -34,6 +33,12 @@ namespace WalletApp
             builder.Host.UseNLog();
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IWalletService, WalletService>();
+            builder.Services.AddScoped<ITransactionService, TransactionService>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+            builder.Services.AddScoped<IWalletRepository, WalletRepository>();
+
+
 
             // For Entity Framework  
             builder.Services.AddDbContext<WalletDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));

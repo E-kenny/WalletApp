@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
+using System.Transactions;
+using WalletApp.Abstractions.Repositories;
 using WalletApp.Abstractions.Services;
 using WalletApp.Models.DTO;
 
@@ -11,35 +12,25 @@ namespace WalletApp.Services
 {
     public class TransactionService : ITransactionService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public TransactionService(IHttpClientFactory httpClientFactory)
+        public TransactionService(ITransactionRepository transactionRepository)
         {
-            _httpClientFactory = httpClientFactory;
+            _transactionRepository = transactionRepository;
+        }
+        public Task<double?> ConvertCurrency(string currencyToConvert, double amount)
+        {
+            throw new NotImplementedException();
         }
 
-        public async Task<double?> ConvertCurrency(string currencyToConvert, double amount)
+        public Task<IEnumerable<TransactionDTO>> GetAllUserTransactions(int UserId)
         {
-            var convAmount = 0.00;
-            try
-            {
-                var httpClient = _httpClientFactory.CreateClient();
-                var conversionStr = "https://open.er-api.com/v6/latest/NGN";
-                using (var response = await httpClient.GetAsync(conversionStr, HttpCompletionOption.ResponseHeadersRead))
-                {
-                    response.EnsureSuccessStatusCode();
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    var newRates = await JsonSerializer.DeserializeAsync<RatesDTO>(stream);
-                    var rate = newRates.rates[currencyToConvert];
-                    convAmount = rate * amount;
-                }
-            }
+            throw new NotImplementedException();
+        }
 
-            catch (Exception ex)
-            {
-                return null;
-            }
-            return convAmount;
+        public Task<IEnumerable<TransactionDTO>> GetWalletStatement(int WalletId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
