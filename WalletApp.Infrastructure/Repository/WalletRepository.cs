@@ -23,16 +23,24 @@ namespace WalletApp.Infrastructure.Repository
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetId() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        private string GetId() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        public async Task<WalletDTO> CreateWalletAsync(WalletDTO walletDTO)
+        public async Task<string> CreateWalletAsync()
         {
             var address = GenerateAddress();
-            var user = await _context.Users.Where(u => u.Id == walletDTO.UserId).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Id == GetId()).FirstOrDefaultAsync();
             GenerateHash(address,out byte[] AddressHash, out byte[] AddressKey);
             var wallet = new Wallet();
+            wallet.UserId = user.Id;
             wallet.Address = address;
-            return walletDTO;
+            wallet.AddressHash = AddressHash;
+            wallet.AddressKey = AddressKey;
+            wallet.Balance = 0;
+            wallet.User = user;
+            _context.Wallets.Add(wallet);
+            await _context.SaveChangesAsync();
+
+            return address;
         }
 
         public Task<bool> DepositAsync(double amount, WalletDTO walletDTO)
