@@ -31,5 +31,13 @@ namespace WalletApp.Controllers
             if (false == depsited) return BadRequest("Unable to Deposit in this wallet");
             return Ok("Deposit successfully");
         }
+
+        [HttpPost("/transfer")]
+        public async Task<ActionResult<string>> Transfer(TransferDto transfer)
+        {
+            var transferred = await _walletService.TransferAsync(transfer);
+            if (false == transferred) return BadRequest("Unable to transfer");
+            return Ok("Deposit Successfully");
+        }
     }
 }

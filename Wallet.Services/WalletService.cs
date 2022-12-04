@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using WalletApp.Abstractions.Repositories;
@@ -37,9 +38,11 @@ namespace WalletApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> TransferAsync(double amount, WalletDTO walletDTOSender, WalletDTO walletDTOReciever)
+        public async Task<bool> TransferAsync(TransferDto transfer)
         {
-            throw new NotImplementedException();
+            if (transfer.Amount < 1) return false;
+            var transferred = await _walletRepository.TransferAsync(transfer);
+            return transferred;
         }
 
         public Task<double> GetBalanceAsync(string walletAddress)

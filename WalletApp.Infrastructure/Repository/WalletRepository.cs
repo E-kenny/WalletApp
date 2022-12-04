@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace WalletApp.Infrastructure.Repository
             var address = await _context.Wallets.Where(w => w.Address == deposit.Address).Include(u=>u.User).FirstOrDefaultAsync();
             if(address == null || address.User.Id != GetId()) return false;
             address.Balance += deposit.Amount;
-            await _context.SaveChangesAsync();
+            
             var trans = new Transaction();
             
             trans.Type = Type.Credit;
@@ -68,9 +69,33 @@ namespace WalletApp.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> TransferAsync(double amount, WalletDTO walletDTOSender, WalletDTO walletDTOReciever)
+        public async Task<bool> TransferAsync(TransferDto tranfer)
         {
-            throw new NotImplementedException();
+            var wallet = await _context.Wallets.Where(w => w.Address == tranfer.SenderAddress).Include(u => u.User).FirstOrDefaultAsync();
+            var wallet2 = await _context.Wallets.Where(w => w.Address == tranfer.RecieverAddress).Include(u => u.User).FirstOrDefaultAsync();
+            if (wallet == null || wallet.User.Id != GetId() || wallet2 == null || wallet.Balance < tranfer.Amount) return false;
+            wallet.Balance -= tranfer.Amount;
+            wallet2.Balance += tranfer.Amount;
+            
+
+            var trans1 = new Transaction();
+            trans1.Type = Type.Debit;
+            trans1.WalletId = wallet.Id;
+            trans1.Amount = tranfer.Amount;
+            trans1.Balance = wallet.Balance;
+            trans1.Wallet = wallet;
+            _context.Transactions.Add(trans1);
+
+            var trans2 = new Transaction();
+            trans2.Type = Type.Credit;
+            trans2.WalletId = wallet2.Id;
+            trans2.Amount = tranfer.Amount;
+            trans2.Balance = wallet2.Balance;
+            trans2.Wallet = wallet2;
+            _context.Transactions.Add(trans2);
+
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public Task<double> GetBalanceAsync(string walletAddress)
