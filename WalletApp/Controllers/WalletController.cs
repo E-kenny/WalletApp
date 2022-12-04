@@ -18,12 +18,9 @@ namespace WalletApp.Controllers
             this.httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
-        public ActionResult<string> GetId()
+        public async Task<ActionResult<string>> CreateAddress()
         {
-            
-            var id = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var id = _walletService.GetId();
-            return Ok(id!=null?id:"Nothing here");
+            return Ok(await _walletService.CreateWalletAsync());
         }
     }
 }

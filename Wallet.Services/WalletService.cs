@@ -18,11 +18,11 @@ namespace WalletApp.Services
         {
             _walletRepository = walletRepository;
         }
-        public string GetId() => _walletRepository.GetId();
-
-        public async Task<WalletDTO> CreateWalletAsync(WalletDTO walletDTO)
+        
+        public async Task<string> CreateWalletAsync()
         {
-            throw new NotImplementedException();
+            var address = await _walletRepository.CreateWalletAsync();
+            return address;
         }
 
         public Task<bool> DepositAsync(double amount, WalletDTO walletDTO)

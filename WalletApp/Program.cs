@@ -79,11 +79,9 @@ namespace WalletApp
             builder.Services.AddEndpointsApiExplorer();
             //builder.Services.AddSwaggerGen();
 
-<<<<<<< HEAD
             //Add HttpClient
             builder.Services.AddHttpClient();
-            
-=======
+
 
                 //Authorization lock
                 builder.Services.AddSwaggerGen(c =>
@@ -126,7 +124,6 @@ namespace WalletApp
 
                 //Add HttpClient
                 builder.Services.AddHttpClient();
->>>>>>> 518a92feccc24b8ee01e738ec75afb779443fdd4
 
             var app = builder.Build();
 
