@@ -163,7 +163,8 @@ namespace WalletApp.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SecurityKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    AddressKey = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>

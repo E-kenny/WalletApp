@@ -12,7 +12,7 @@ using WalletApp.Infrastructure;
 namespace WalletApp.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
-    [Migration("20221202001538_InitialMigration")]
+    [Migration("20221204131933_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,12 +262,16 @@ namespace WalletApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("AddressHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("AddressKey")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("SecurityKey")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

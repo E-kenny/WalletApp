@@ -15,8 +15,8 @@ namespace WalletApp.Models.Entities
         public string Id { get; set; }
         public Type Type { get; set; }
         public int WalletId { get; set; }
-        public decimal Amount { get; set; }
-        public decimal Balance { get; set; }
+        public double Amount { get; set; }
+        public double Balance { get; set; }
         public Wallet Wallet { get; set; }
     }
 }

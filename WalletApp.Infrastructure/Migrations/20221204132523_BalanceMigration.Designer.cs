@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WalletApp.Infrastructure;
 
@@ -11,9 +12,10 @@ using WalletApp.Infrastructure;
 namespace WalletApp.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
-    partial class WalletDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221204132523_BalanceMigration")]
+    partial class BalanceMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
