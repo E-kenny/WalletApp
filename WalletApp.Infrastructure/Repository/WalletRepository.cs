@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WalletApp.Abstractions.Repositories;
@@ -13,11 +15,15 @@ namespace WalletApp.Infrastructure.Repository
     public class WalletRepository:IWalletRepository
     {
         private readonly WalletDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public WalletRepository(WalletDbContext context)
+        public WalletRepository(WalletDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        public string GetId() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         public async Task<WalletDTO> CreateWalletAsync(WalletDTO walletDTO)
         {
@@ -44,7 +50,7 @@ namespace WalletApp.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<double> GetBalanceAsync(int walletId)
+        public Task<double> GetBalanceAsync(int walletI)
         {
             throw new NotImplementedException();
         }
