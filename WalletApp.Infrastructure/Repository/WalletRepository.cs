@@ -58,7 +58,7 @@ namespace WalletApp.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<double> GetBalanceAsync(int walletI)
+        public Task<double> GetBalanceAsync(string walletAddress)
         {
             throw new NotImplementedException();
         }
