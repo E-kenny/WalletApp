@@ -25,9 +25,11 @@ namespace WalletApp.Services
             return address;
         }
 
-        public Task<bool> DepositAsync(double amount, WalletDTO walletDTO)
+        public async Task<bool> DepositAsync(DepositDto deposit)
         {
-            throw new NotImplementedException();
+            if(deposit.Amount < 1) return false;
+            var deposited = await _walletRepository.DepositAsync(deposit);
+            return deposited;   
         }
 
         public Task<bool> WithdrawAsync(double amount, WalletDTO walletDTO)
@@ -40,7 +42,7 @@ namespace WalletApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<double> GetBalanceAsync(int walletId)
+        public Task<double> GetBalanceAsync(string walletAddress)
         {
             throw new NotImplementedException();
         }

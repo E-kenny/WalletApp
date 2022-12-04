@@ -12,7 +12,7 @@ namespace WalletApp.Models.Entities
     }
     public class Transaction
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public Type Type { get; set; }
         public int WalletId { get; set; }
         public double Amount { get; set; }

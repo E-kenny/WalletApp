@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using WalletApp.Abstractions.Repositories;
 using WalletApp.Models.DTO;
 using WalletApp.Models.Entities;
+using Type = WalletApp.Models.Entities.Type;
 
 namespace WalletApp.Infrastructure.Repository
 {
@@ -43,9 +44,23 @@ namespace WalletApp.Infrastructure.Repository
             return address;
         }
 
-        public Task<bool> DepositAsync(double amount, WalletDTO walletDTO)
+        public async Task<bool> DepositAsync(DepositDto deposit)
         {
-            throw new NotImplementedException();
+            var address = await _context.Wallets.Where(w => w.Address == deposit.Address).Include(u=>u.User).FirstOrDefaultAsync();
+            if(address == null || address.User.Id != GetId()) return false;
+            address.Balance += deposit.Amount;
+            await _context.SaveChangesAsync();
+            var trans = new Transaction();
+            
+            trans.Type = Type.Credit;
+            trans.WalletId = address.Id;
+            trans.Amount = deposit.Amount;
+            trans.Balance = address.Balance;
+            trans.Wallet = address;
+            _context.Transactions.Add(trans);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public Task<bool> WithdrawAsync(double amount, WalletDTO walletDTO)
