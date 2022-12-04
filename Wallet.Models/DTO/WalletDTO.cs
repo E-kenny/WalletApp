@@ -14,6 +14,6 @@ namespace WalletApp.Models.DTO
         public string Address { get; set; }
         //public string SecurityKey { get; set; }
         public decimal Balance { get; set; }
-        public ICollection<Transaction> Transactions { get; set; }
+       // public ICollection<Transaction> Transactions { get; set; }
     }
 }

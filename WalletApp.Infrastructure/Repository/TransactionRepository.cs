@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WalletApp.Abstractions.Repositories;
 using WalletApp.Abstractions.Services;
 using WalletApp.Models.DTO;
+using WalletApp.Models.Entities;
 
 namespace WalletApp.Infrastructure.Repository
 {
@@ -19,14 +20,24 @@ namespace WalletApp.Infrastructure.Repository
             _context = context;
         }
 
-        public Task<IEnumerable<TransactionDTO>> GetAllUserTransactions(int UserId)
+        public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(WalletDTO model)
         {
-            throw new NotImplementedException();
+            var listOfTransactions = new List<List<Transaction>>();
+            var allWallet =_context.Wallets.Where(x => x.UserId == model.UserId);
+               foreach(var wallet in allWallet) 
+                {
+                  var transaction = _context.Transactions.Where(x => x.WalletId == wallet.Id).ToList();
+                  listOfTransactions.Add(transaction);
+                }
+                  await  _context.SaveChangesAsync();
+            return listOfTransactions;
         }
 
-        public Task<IEnumerable<TransactionDTO>> GetWalletStatement(int WalletId)
+        public async Task<IEnumerable<Transaction>> GetWalletStatement(WalletDTO model)
         {
-            throw new NotImplementedException();
+            var result =  _context.Transactions.Where(x => x.WalletId == model.Id).ToList();
+            await _context.SaveChangesAsync();
+            return result;
         }
     }
 }
