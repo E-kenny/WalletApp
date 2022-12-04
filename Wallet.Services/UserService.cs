@@ -24,14 +24,13 @@ namespace WalletApp.Services
         public async Task<String> Register(UserDTO user)
         {
 
-
             User newUser = new User()
             {
                 Email = user.Email,
                 Name = user.Name,
                 UserName = user.Username
             };
-
+            
             var result = await _userManager.CreateAsync(newUser, user.Password);
             if (result.Succeeded)
                 return "Successful";

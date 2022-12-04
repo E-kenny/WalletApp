@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
 using WalletApp.Models.DTO;
+using WalletApp.Models.Entities;
 
 namespace WalletApp.Abstractions.Services
 {
@@ -14,8 +14,8 @@ namespace WalletApp.Abstractions.Services
         public Task<double?> ConvertCurrency(string currencyA,string currencyB, double amount);
         public Task<double?> GetRate(string currencyCode, double amount);
 
-        public Task<IEnumerable<TransactionDTO>> GetAllUserTransactions(int UserId);
-        public Task<IEnumerable<TransactionDTO>> GetWalletStatement(int WalletId);
+        public Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(WalletDTO model);
+        public Task<IEnumerable<Transaction>> GetWalletStatement(WalletDTO model);
 
     }
 }
