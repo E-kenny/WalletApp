@@ -23,16 +23,43 @@ namespace WalletApp.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpGet("/transactions")]
-        public Task<IEnumerable<TransactionDTO>> GetAllUserTransactions(int UserId)
+        [HttpPost("/transactions")]
+        public async Task<IActionResult> GetAllUserTransactions(WalletDTO model)
         {
-            throw new NotImplementedException();
+            try
+            {
+               var result =  await _transactionService.GetAllUserTransactions(model);
+                if(result!=null)
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+
+                return Problem(ex.Message);
+            }
+            
         }
 
-        [HttpGet("/statement")]
-        public Task<IEnumerable<TransactionDTO>> GetWalletStatement(int WalletId)
+        [HttpPost("/statement")]
+        public async Task<IActionResult> GetWalletStatement(WalletDTO model)
         {
-            throw new NotImplementedException();
+            try
+            {
+               var result = await _transactionService.GetWalletStatement(model);
+                if(result!=null)
+                {
+                    return Ok(result);
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
     }
 }

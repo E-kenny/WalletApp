@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Transactions;
 using WalletApp.Abstractions.Repositories;
 using WalletApp.Abstractions.Services;
 using WalletApp.Models.DTO;
+using WalletApp.Models.Entities;
 
 namespace WalletApp.Services
 {
@@ -74,15 +74,15 @@ namespace WalletApp.Services
             }
         }
 
-        public Task<IEnumerable<TransactionDTO>> GetAllUserTransactions(int UserId)
+        public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(WalletDTO model)
         {
-            throw new NotImplementedException();
+           return await _transactionRepository.GetAllUserTransactions(model);
         }
 
         
-        public Task<IEnumerable<TransactionDTO>> GetWalletStatement(int WalletId)
+        public async Task<IEnumerable<Transaction>> GetWalletStatement(WalletDTO model)
         {
-            throw new NotImplementedException();
+            return await _transactionRepository.GetWalletStatement(model);
         }
     
     }

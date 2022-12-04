@@ -8,5 +8,6 @@ namespace WalletApp.Models.DTO
 {
     public class TransactionDTO
     {
+
     }
 }
