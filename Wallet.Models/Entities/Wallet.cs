@@ -13,7 +13,7 @@ namespace WalletApp.Models.Entities
         public string Address { get; set; }
         public byte[] AddressHash { get; set; }
         public byte[] AddressKey { get; set; }
-        public decimal Balance { get; set; }
+        public double Balance { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
         public User User { get; set; }
     }
