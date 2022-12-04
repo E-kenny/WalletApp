@@ -17,17 +17,19 @@ namespace WalletApp.Controllers
             _transactionService = transactionService;
         }
 
-        [HttpGet]
+        [HttpGet("/convert")]
         public Task<double?> ConvertCurrency(string currencyToConvert, double amount)
         {
             throw new NotImplementedException();
         }
 
+        [HttpGet("/transactions")]
         public Task<IEnumerable<TransactionDTO>> GetAllUserTransactions(int UserId)
         {
             throw new NotImplementedException();
         }
 
+        [HttpGet("/statement")]
         public Task<IEnumerable<TransactionDTO>> GetWalletStatement(int WalletId)
         {
             throw new NotImplementedException();
