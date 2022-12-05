@@ -21,7 +21,9 @@ namespace WalletApp.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> CreateAddress()
         {
-            return Ok(await _walletService.CreateWalletAsync());
+            var response = await _walletService.CreateWalletAsync();
+            if(response == "Failed") return Unauthorized("You must be loggedIn to Create a Wallet");
+            return Ok(response);
         }
 
         [HttpPost]

@@ -25,6 +25,7 @@ namespace WalletApp.Infrastructure.Repository
         {
             var address = GenerateAddress();
             var user = await _context.Users.Where(u => u.Id == GetId()).FirstOrDefaultAsync();
+            if (user == null) return "Failed";
             GenerateHash(address,out byte[] AddressHash, out byte[] AddressKey);
             var wallet = new Wallet();
             wallet.UserId = user.Id;
