@@ -38,7 +38,7 @@ namespace WalletApp.Infrastructure.Repository
         }
 
 
-        public async Task<IEnumerable<Transaction>> GetWalletStatementAsync(string walletAddress)
+        public async Task<IEnumerable<Transaction>> GetWalletStatementAsync(string walletAddress, int page)
         {
             var currentWallet = await _context.Wallets
                 .Include(s => s.User)
@@ -55,8 +55,14 @@ namespace WalletApp.Infrastructure.Repository
                 return null;
             }
             var result = _context.Transactions.Where(x => x.WalletId == currentWallet.Id).ToList();
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(result.Count() / pageResults);
+
+            var paginatedResult = result.Skip((page - 1) * (int)pageResults).Take((int)pageResults).ToList();
             await _context.SaveChangesAsync();
-            return result;
+
+            //return PagedList<Transaction>.ToPagedList(result, 5, 5 );
+            return paginatedResult;
         }
     }
 }
