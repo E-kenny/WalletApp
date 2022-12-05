@@ -50,7 +50,7 @@ namespace WalletApp.Services
                 }
 
         }
-        public async Task<double?> GetRateAsync(string currencyCode, double amount)
+        public async Task<double?> GetRateAsync(string currencyCode, double? amount)
         {
             try
             {
@@ -76,33 +76,52 @@ namespace WalletApp.Services
 
         public async Task<IEnumerable<TransactionDTO>> GetAllUserTransactionsAsync()
         {
-            var result = await _transactionRepository.GetAllUserTransactionsAsync();
-            var allTransaction = new List<TransactionDTO>();
-
-            foreach (var items in result)
+            try
             {
-                foreach (var item in items)
+
+                var result = await _transactionRepository.GetAllUserTransactionsAsync();
+                var allTransaction = new List<TransactionDTO>();
+
+                foreach (var items in result)
                 {
-                    allTransaction.Add(WalletAppMapper.TransactioToDTO(item));
+                    foreach (var item in items)
+                    {
+                        allTransaction.Add(WalletAppMapper.TransactioToDTO(item));
+                    }
+
                 }
-               
+
+
+                return allTransaction;
+            }
+            catch (Exception)
+            {
+
+                return null;
             }
 
-
-            return allTransaction;
         }
 
         
         public async Task<IEnumerable<TransactionDTO>> GetWalletStatementAsync(string walletAddress, int page)
         {
-            var result = await _transactionRepository.GetWalletStatementAsync(walletAddress, page);
-            var allTransaction = new List<TransactionDTO>();
-            foreach (var item in result)
+            try
             {
-                allTransaction.Add(WalletAppMapper.TransactioToDTO(item));
-            }
+                var result = await _transactionRepository.GetWalletStatementAsync(walletAddress, page);
+                var allTransaction = new List<TransactionDTO>();
+                foreach (var item in result)
+                {
+                    allTransaction.Add(WalletAppMapper.TransactioToDTO(item));
+                }
 
-            return allTransaction;
+                return allTransaction;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+           
         }
     
     }

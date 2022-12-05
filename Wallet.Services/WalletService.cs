@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 using WalletApp.Abstractions.Repositories;
 using WalletApp.Abstractions.Services;
 using WalletApp.Models.DTO;
+using WalletApp.Utils;
 
 namespace WalletApp.Services
 {
     public class WalletService : IWalletService
     {
         private readonly IWalletRepository _walletRepository;
+        private readonly ITransactionService _transactionService;
 
-        public WalletService(IWalletRepository walletRepository)
+        public WalletService(IWalletRepository walletRepository, ITransactionService transactionService)
         {
             _walletRepository = walletRepository;
+            _transactionService = transactionService;
         }
         
         public async Task<string> CreateWalletAsync()
@@ -45,13 +48,40 @@ namespace WalletApp.Services
             return transferred;
         }
 
-        public async Task<double?> GetBalanceAsync(string walletAddress)
+        public async Task<double?> GetBalanceAsync(string walletAddress, string currencyCode)
         {
            var result = await _walletRepository.GetBalanceAsync(walletAddress);
-            if (result != null) return result;
+            if (result != null)
+            {
+               var convertedResult = await _transactionService.GetRateAsync(currencyCode, result);
+                return convertedResult;
+            }
           
         return null;
 
         }
+
+        public async Task<IEnumerable<WalletDTO>> GetListOfWallets()
+        {
+            try
+            {
+                var result = await _walletRepository.GetListOfWallets();
+                var allWallets = new List<WalletDTO>();
+                foreach (var wallet in result)
+                {
+                    allWallets.Add(WalletAppMapper.WalletToDTO(wallet));
+
+                }
+
+                return allWallets;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+          
+        }
+
     }
 }

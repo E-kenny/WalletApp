@@ -12,7 +12,7 @@ namespace WalletApp.Abstractions.Services
     public interface ITransactionService
     {
         public Task<double?> ConvertCurrencyAsync(string currencyA,string currencyB, double amount);
-        public Task<double?> GetRateAsync(string currencyCode, double amount);
+        public Task<double?> GetRateAsync(string currencyCode, double? amount);
 
         public Task<IEnumerable<TransactionDTO>> GetAllUserTransactionsAsync();
         public Task<IEnumerable<TransactionDTO>> GetWalletStatementAsync(string walletAddress, int page);

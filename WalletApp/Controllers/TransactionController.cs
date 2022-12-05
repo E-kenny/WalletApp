@@ -21,73 +21,49 @@ namespace WalletApp.Controllers
 
         [HttpGet("/convert")]
         public async Task<IActionResult> ConvertCurrency(string currencyToConvert, double amount)
-        {
-            try{ 
+        { 
                var result = await _transactionService.GetRateAsync(currencyToConvert, amount);
-            return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation("Unable to Convert");
-                return BadRequest(ex.Message);
-            }
+            if(result!=null) return Ok(result);
+
+            _logger.LogInformation("Unable to Convert");
+            return BadRequest();
+           
         }
 
         [HttpGet("/conversion")]
         public async Task<IActionResult> CurrencyToCurrency(string currencyA, string currencyB, double amount)
-        {
-            try
-            {
+        {            
                 var result = await _transactionService.ConvertCurrencyAsync(currencyA, currencyB, amount);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
+                if(result!=null)return Ok(result);
+                     
                 _logger.LogInformation("Unable to convert");
-                return BadRequest(ex.Message);
-            }
+                return BadRequest();
+            
         }
 
 
         [HttpPost("/transactions")]
         public async Task<IActionResult> GetAllUserTransactions()
         {
-            try
-            {
+                      
                var result =  await _transactionService.GetAllUserTransactionsAsync();
                 if(result!=null)
-                {
                     return Ok(result);
-                }
-
+                
                 _logger.LogInformation("Could not get all user transaction");
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-               
-                return Problem(ex.Message);
-            }
-            
+                return NotFound();       
         }
 
         [HttpPost("/statement")]
         public async Task<IActionResult> GetWalletStatement(string Address, int page)
-        {
-            try
-            {
+        {                       
                var result = await _transactionService.GetWalletStatementAsync(Address, page);
                 if(result!=null)
-                {
-                    return Ok(result);
-                }
+                return Ok(result);
+
                 _logger.LogInformation("Could not get all wallet statement");
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return Problem(ex.Message);
-            }
+                return NotFound();                                                      
         }
+
     }
 }
