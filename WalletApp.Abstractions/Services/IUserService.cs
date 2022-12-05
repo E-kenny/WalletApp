@@ -12,6 +12,6 @@ namespace WalletApp.Abstractions.Services
         public Task<object> LoginAsync(LoginModel model);
 
         public Task<string> Register(UserDTO user);
-        public Task<IEnumerable<WalletDTO>> GetListOfWallets(Guid Id);
+       
     }
 }
