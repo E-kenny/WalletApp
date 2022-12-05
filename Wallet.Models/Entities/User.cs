@@ -5,6 +5,6 @@ namespace WalletApp.Models.Entities
     public class User:IdentityUser
     {
         public string Name { get; set; }
-        public ICollection<Wallet> wallets { get; set; }
+        public ICollection<Wallet> Wallets { get; set; }
     }
 }
