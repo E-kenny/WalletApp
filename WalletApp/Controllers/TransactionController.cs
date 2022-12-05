@@ -24,11 +24,11 @@ namespace WalletApp.Controllers
         }
 
         [HttpPost("/transactions")]
-        public async Task<IActionResult> GetAllUserTransactions(WalletDTO model)
+        public async Task<IActionResult> GetAllUserTransactions()
         {
             try
             {
-               var result =  await _transactionService.GetAllUserTransactions(model);
+               var result =  await _transactionService.GetAllUserTransactionsAsync();
                 if(result!=null)
                 {
                     return Ok(result);
@@ -48,7 +48,7 @@ namespace WalletApp.Controllers
         {
             try
             {
-               var result = await _transactionService.GetWalletStatement(Address);
+               var result = await _transactionService.GetWalletStatementAsync(Address);
                 if(result!=null)
                 {
                     return Ok(result);

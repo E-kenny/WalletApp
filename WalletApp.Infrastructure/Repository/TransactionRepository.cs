@@ -1,15 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using WalletApp.Abstractions.Repositories;
-using WalletApp.Abstractions.Services;
-using WalletApp.Models.DTO;
 using WalletApp.Models.Entities;
 
 namespace WalletApp.Infrastructure.Repository
@@ -27,46 +19,32 @@ namespace WalletApp.Infrastructure.Repository
 
         private string GetId() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(Wallet model)
+        public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactionsAsync()
         {
-            var result = await _context.Wallets.FindAsync(GetId());
-            if (result == null || GetId() != result.UserId)
+         
+            var currentWallet = _context.Wallets.Where(x => x.UserId == GetId())
+               .Include(s => s.User)
+               .Include(e => e.Transactions)
+               .AsNoTracking();
+
+            var listOfTransactions = new List<ICollection<Transaction>>();
+
+            foreach (var item in currentWallet)
             {
-                return null;
+                listOfTransactions.Add(item.Transactions);
             }
 
-            //if (GetId() != result.UserId)
-            //{
-            //    return null;
-            //}
-
-            var listOfTransactions = new List<List<Transaction>>();
-            var allWallet = _context.Wallets.Where(x => x.UserId == result.UserId);
-            foreach (var wallet in allWallet)
-            {
-                var transaction = _context.Transactions.Where(x => x.WalletId == wallet.Id).ToList();
-                listOfTransactions.Add(transaction);
-            }
-            await _context.SaveChangesAsync();
             return listOfTransactions;
         }
 
-        public async Task<IEnumerable<Transaction>> GetWalletStatement(string walletAddress)
+
+
+        public async Task<IEnumerable<Transaction>> GetWalletStatementAsync(string walletAddress)
         {
-
-        //    _context.Students
-        //.Include(s => s.Enrollments)
-        //    .ThenInclude(e => e.Course)
-        //.AsNoTracking()
-        //.FirstOrDefaultAsync(m => m.ID == id);
-
-
-
-
             var currentWallet = await _context.Wallets
                 .Include(s => s.User)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.UserId == GetId());
+                .FirstOrDefaultAsync(m => m.Address == walletAddress);
 
             if (currentWallet == null || GetId() != currentWallet.UserId)
             {
