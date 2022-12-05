@@ -15,7 +15,7 @@ namespace WalletApp.Abstractions.Services
         public Task<double?> GetRate(string currencyCode, double amount);
 
         public Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(WalletDTO model);
-        public Task<IEnumerable<Transaction>> GetWalletStatement(WalletDTO model);
+        public Task<IEnumerable<TransactionDTO>> GetWalletStatement(string walletAddress);
 
     }
 }
