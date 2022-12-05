@@ -44,11 +44,11 @@ namespace WalletApp.Controllers
         }
 
         [HttpPost("/statement")]
-        public async Task<IActionResult> GetWalletStatement(WalletDTO model)
+        public async Task<IActionResult> GetWalletStatement(string Address)
         {
             try
             {
-               var result = await _transactionService.GetWalletStatement(model);
+               var result = await _transactionService.GetWalletStatement(Address);
                 if(result!=null)
                 {
                     return Ok(result);

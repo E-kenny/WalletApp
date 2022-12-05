@@ -19,12 +19,19 @@ namespace WalletApp.Utils
         public static Wallet DTOToModel(WalletDTO model)
         {
             var wallet = new Wallet();
-            wallet.UserId = model.UserId;
-            wallet.Balance = model.Balance;
             wallet.Address = model.Address;
-            wallet.Id = model.Id;
-
             return wallet;
+        }
+
+        public static TransactionDTO TransactioToDTO(Transaction transaction)
+        {
+            var transactionDTO = new TransactionDTO();
+            transactionDTO.Id = transaction.Id;
+            transactionDTO.WalletId = transaction.WalletId;
+            transactionDTO.Type = (Models.DTO.Type)transaction.Type;
+            transactionDTO.Amount = transaction.Amount;
+            transactionDTO.Balance = transaction.Balance;
+            return transactionDTO;
         }
     }
 }

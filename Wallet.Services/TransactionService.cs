@@ -81,9 +81,16 @@ namespace WalletApp.Services
         }
 
         
-        public async Task<IEnumerable<Transaction>> GetWalletStatement(WalletDTO model)
+        public async Task<IEnumerable<TransactionDTO>> GetWalletStatement(string walletAddress)
         {
-            return await _transactionRepository.GetWalletStatement(WalletAppMapper.DTOToModel(model));
+            var result = await _transactionRepository.GetWalletStatement(walletAddress);
+            var allTransaction = new List<TransactionDTO>();
+            foreach (var item in result)
+            {
+                allTransaction.Add(WalletAppMapper.TransactioToDTO(item));
+            }
+
+            return allTransaction;
         }
     
     }
