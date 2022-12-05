@@ -12,7 +12,7 @@ namespace WalletApp.Abstractions.Services
     {
         public Task<string> CreateWalletAsync();
         public Task<bool> DepositAsync(DepositDto deposit);
-        public Task<bool> WithdrawAsync(double amount, WalletDTO walletDTO);
+        public Task<bool> WithdrawAsync(DepositDto withdraw);
         public Task<bool> TransferAsync(TransferDto tranfer);
         public Task<double?> GetBalanceAsync(string walletAddress, string currencyCode);
         public Task<IEnumerable<WalletDTO>> GetListOfWallets();
