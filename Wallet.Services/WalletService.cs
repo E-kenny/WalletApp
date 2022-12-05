@@ -45,9 +45,13 @@ namespace WalletApp.Services
             return transferred;
         }
 
-        public Task<double> GetBalanceAsync(string walletAddress)
+        public async Task<double?> GetBalanceAsync(string walletAddress)
         {
-            throw new NotImplementedException();
+           var result = await _walletRepository.GetBalanceAsync(walletAddress);
+            if (result != null) return result;
+          
+        return null;
+
         }
     }
 }
