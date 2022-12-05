@@ -5,18 +5,19 @@ namespace WalletApp.Utils
 {
     public class WalletAppMapper
     {
-        public static WalletDTO ModelToDTO(Wallet model)
+        public static WalletDTO WalletToDTO(Wallet model)
         {
             var walletDTO = new WalletDTO();
+            walletDTO.Id = model.Id;
             walletDTO.Address = model.Address;
             walletDTO.UserId = model.UserId;
             walletDTO.Balance = model.Balance;
-            walletDTO.Id = model.Id;
+           
 
             return walletDTO;
         }
 
-        public static Wallet DTOToModel(WalletDTO model)
+        public static Wallet DTOToWallet(WalletDTO model)
         {
             var wallet = new Wallet();
             wallet.Address = model.Address;

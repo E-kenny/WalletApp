@@ -71,7 +71,6 @@ namespace WalletApp.Services
             catch (Exception)
             {
                 return default;
-
             }
         }
 

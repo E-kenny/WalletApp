@@ -18,10 +18,32 @@ namespace WalletApp.Controllers
         }
 
         [HttpGet("/convert")]
-        public Task<double?> ConvertCurrency(string currencyToConvert, double amount)
+        public async Task<IActionResult> ConvertCurrency(string currencyToConvert, double amount)
         {
-            throw new NotImplementedException();
+            try{ 
+               var result = await _transactionService.GetRateAsync(currencyToConvert, amount);
+            return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
+        [HttpGet("/conversion")]
+        public async Task<IActionResult> CurrencyToCurrency(string currencyA, string currencyB, double amount)
+        {
+            try
+            {
+                var result = await _transactionService.ConvertCurrencyAsync(currencyA, currencyB, amount);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost("/transactions")]
         public async Task<IActionResult> GetAllUserTransactions()
