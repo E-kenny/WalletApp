@@ -38,7 +38,6 @@ namespace WalletApp.Infrastructure.Repository
         }
 
 
-
         public async Task<IEnumerable<Transaction>> GetWalletStatementAsync(string walletAddress)
         {
             var currentWallet = await _context.Wallets

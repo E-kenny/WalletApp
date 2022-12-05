@@ -100,9 +100,12 @@ namespace WalletApp.Infrastructure.Repository
 
         public async Task<double?> GetBalanceAsync(string walletAddress)
         {
+           
             var balance = 0.0;
-            var result = await _context.Wallets.FirstOrDefaultAsync(x => x.Address == walletAddress);
-            if (result != null)
+            var result = await _context.Wallets.Where(x => x.Address == walletAddress)
+                          .FirstOrDefaultAsync();  
+
+            if (result != null && result.UserId == GetId())
             {
                 var isVerified = VerifyAddress(walletAddress, result.AddressHash, result.AddressKey);
 
@@ -115,8 +118,7 @@ namespace WalletApp.Infrastructure.Repository
 
                 return null;
             }
-            
-                
+                      
             return null;
         }
 
