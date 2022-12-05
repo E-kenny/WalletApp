@@ -10,10 +10,12 @@ namespace WalletApp.Controllers
     [ApiController]
     public class TransactionController : ControllerBase
     {
+        private readonly ILogger<TransactionController> _logger;
         private readonly ITransactionService _transactionService;
 
-        public TransactionController(ITransactionService transactionService)
+        public TransactionController(ILogger<TransactionController> logger, ITransactionService transactionService)
         {
+            _logger = logger;
             _transactionService = transactionService;
         }
 
@@ -26,6 +28,7 @@ namespace WalletApp.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation("Unable to Convert");
                 return BadRequest(ex.Message);
             }
         }
@@ -40,6 +43,7 @@ namespace WalletApp.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation("Unable to convert");
                 return BadRequest(ex.Message);
             }
         }
@@ -55,27 +59,29 @@ namespace WalletApp.Controllers
                 {
                     return Ok(result);
                 }
+
+                _logger.LogInformation("Could not get all user transaction");
                 return NotFound();
             }
             catch (Exception ex)
             {
-
+               
                 return Problem(ex.Message);
             }
             
         }
 
         [HttpPost("/statement")]
-        public async Task<IActionResult> GetWalletStatement(string Address)
+        public async Task<IActionResult> GetWalletStatement(string Address, int page)
         {
             try
             {
-               var result = await _transactionService.GetWalletStatementAsync(Address);
+               var result = await _transactionService.GetWalletStatementAsync(Address, page);
                 if(result!=null)
                 {
                     return Ok(result);
                 }
-
+                _logger.LogInformation("Could not get all wallet statement");
                 return NotFound();
             }
             catch (Exception ex)

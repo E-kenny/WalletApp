@@ -15,7 +15,7 @@ namespace WalletApp.Abstractions.Services
         public Task<double?> GetRateAsync(string currencyCode, double amount);
 
         public Task<IEnumerable<TransactionDTO>> GetAllUserTransactionsAsync();
-        public Task<IEnumerable<TransactionDTO>> GetWalletStatementAsync(string walletAddress);
+        public Task<IEnumerable<TransactionDTO>> GetWalletStatementAsync(string walletAddress, int page);
 
     }
 }

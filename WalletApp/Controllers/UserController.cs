@@ -15,7 +15,6 @@ namespace WalletApp.Controllers
         public UserController(IUserService userService, ILogger<UserController> logger)
         {
             _logger = logger;
-            _logger.LogDebug(1, "NLog injected into HomeController");
             _userService = userService;
         }
 
@@ -25,18 +24,20 @@ namespace WalletApp.Controllers
 
             var register = await _userService.Register(user);
 
-            if (user == null)
-                return NotFound();
+            if (register != null)
+                return Ok(register);
 
-            return Ok(register);
+            _logger.LogInformation("Registration failed!");
+            return BadRequest();    
         }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            _logger.LogInformation("Hello, this is the index!");
             var token = await _userService.LoginAsync(model);
-            if (token != null) return Ok(token);           
+            if (token != null) return Ok(token);
+
+            _logger.LogInformation("Log in failed!");
             return Problem();   
         }
 

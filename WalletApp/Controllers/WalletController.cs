@@ -10,20 +10,20 @@ namespace WalletApp.Controllers
     [ApiController]
     public class WalletController : ControllerBase
     {
+        private readonly ILogger<WalletController> _logger;
         private readonly IWalletService _walletService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public WalletController(IWalletService walletService, IHttpContextAccessor httpContextAccessor)
+        public WalletController(ILogger<WalletController> logger, IWalletService walletService, IHttpContextAccessor httpContextAccessor)
         {
+            _logger = logger;
             _walletService = walletService;
             this.httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         public async Task<ActionResult<string>> CreateAddress()
         {
-            var response = await _walletService.CreateWalletAsync();
-            if(response == "Failed") return Unauthorized("You must be loggedIn to Create a Wallet");
-            return Ok(response);
+            return Ok(await _walletService.CreateWalletAsync());
         }
 
         [HttpPost]
@@ -47,6 +47,7 @@ namespace WalletApp.Controllers
         {
             var result = await _walletService.GetBalanceAsync(walletAddress);
             if(result!=null) return Ok(result);
+            _logger.LogInformation("Unable to get balance");
             return BadRequest();
         }
     }

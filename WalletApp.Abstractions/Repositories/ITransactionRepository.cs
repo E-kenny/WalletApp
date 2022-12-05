@@ -10,7 +10,7 @@ namespace WalletApp.Abstractions.Repositories
 {
     public interface ITransactionRepository
     {
-        public Task<IEnumerable<Transaction>> GetWalletStatementAsync(string walletAddress);
+        public Task<IEnumerable<Transaction>> GetWalletStatementAsync(string walletAddress, int page);
         public Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactionsAsync();
     }
 }
