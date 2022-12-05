@@ -40,7 +40,6 @@ namespace WalletApp
             builder.Services.AddScoped<IWalletRepository, WalletRepository>();
 
 
-
             // For Entity Framework  
             builder.Services.AddDbContext<WalletDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
 
@@ -116,8 +115,10 @@ namespace WalletApp
                             new List<string>()
                           }
                         });
+                    
                     //   var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     //   var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    
                     //   c.IncludeXmlComments(xmlPath);
                 });
 
