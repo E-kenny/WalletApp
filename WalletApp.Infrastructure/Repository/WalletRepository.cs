@@ -98,9 +98,26 @@ namespace WalletApp.Infrastructure.Repository
             return true;
         }
 
-        public Task<double> GetBalanceAsync(string walletAddress)
+        public async Task<double?> GetBalanceAsync(string walletAddress)
         {
-            throw new NotImplementedException();
+            var balance = 0.0;
+            var result = await _context.Wallets.FirstOrDefaultAsync(x => x.Address == walletAddress);
+            if (result != null)
+            {
+                var isVerified = VerifyAddress(walletAddress, result.AddressHash, result.AddressKey);
+
+                if (isVerified)
+                {
+                    var res = await _context.Wallets.FirstAsync(x => x.Address == result.Address);
+                    balance = res.Balance;
+                    return balance;
+                }
+
+                return null;
+            }
+            
+                
+            return null;
         }
 
         private void GenerateHash(string address, out byte[] AddressHash, out byte[] AddressKey)
@@ -121,6 +138,7 @@ namespace WalletApp.Infrastructure.Repository
                 return computedHash.SequenceEqual(AddressHash);
             }
         }
+
         private string GenerateAddress()
         {
             var address = "0x";

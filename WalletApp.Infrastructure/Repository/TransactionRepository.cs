@@ -20,7 +20,7 @@ namespace WalletApp.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(WalletDTO model)
+        public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(Wallet model)
         {
             var listOfTransactions = new List<List<Transaction>>();
             var allWallet =_context.Wallets.Where(x => x.UserId == model.UserId);
@@ -33,7 +33,7 @@ namespace WalletApp.Infrastructure.Repository
             return listOfTransactions;
         }
 
-        public async Task<IEnumerable<Transaction>> GetWalletStatement(WalletDTO model)
+        public async Task<IEnumerable<Transaction>> GetWalletStatement(Wallet model)
         {
             var result =  _context.Transactions.Where(x => x.WalletId == model.Id).ToList();
             await _context.SaveChangesAsync();

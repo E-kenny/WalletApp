@@ -9,6 +9,7 @@ using WalletApp.Abstractions.Repositories;
 using WalletApp.Abstractions.Services;
 using WalletApp.Models.DTO;
 using WalletApp.Models.Entities;
+using WalletApp.Utils;
 
 namespace WalletApp.Services
 {
@@ -76,13 +77,13 @@ namespace WalletApp.Services
 
         public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(WalletDTO model)
         {
-           return await _transactionRepository.GetAllUserTransactions(model);
+           return await _transactionRepository.GetAllUserTransactions(WalletAppMapper.DTOToModel(model));
         }
 
         
         public async Task<IEnumerable<Transaction>> GetWalletStatement(WalletDTO model)
         {
-            return await _transactionRepository.GetWalletStatement(model);
+            return await _transactionRepository.GetWalletStatement(WalletAppMapper.DTOToModel(model));
         }
     
     }

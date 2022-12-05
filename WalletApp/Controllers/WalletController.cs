@@ -39,5 +39,13 @@ namespace WalletApp.Controllers
             if (false == transferred) return BadRequest("Unable to transfer");
             return Ok("Deposit Successfully");
         }
+
+        [HttpGet("/balance")]
+        public async Task<ActionResult<double>> GetBalance(string walletAddress)
+        {
+            var result = await _walletService.GetBalanceAsync(walletAddress);
+            if(result!=null) return Ok(result);
+            return BadRequest();
+        }
     }
 }
