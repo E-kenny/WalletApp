@@ -36,9 +36,11 @@ namespace WalletApp.Services
             return deposited;   
         }
 
-        public Task<bool> WithdrawAsync(double amount, WalletDTO walletDTO)
+        public async Task<bool> WithdrawAsync(DepositDto withdraw)
         {
-            throw new NotImplementedException();
+            if (withdraw.Amount < 1) return false;
+            var withdrawn = await _walletRepository.WithdrawAsync(withdraw);
+            return withdrawn;
         }
 
         public async Task<bool> TransferAsync(TransferDto transfer)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Security.Claims;
 using WalletApp.Abstractions.Repositories;
 using WalletApp.Models.DTO;
@@ -59,9 +60,24 @@ namespace WalletApp.Infrastructure.Repository
             return true;
         }
 
-        public Task<bool> WithdrawAsync(double amount, WalletDTO walletDTO)
+        public async Task<bool> WithdrawAsync(DepositDto withdraw)
         {
-            throw new NotImplementedException();
+            var wallet = await _context.Wallets.Where(w => w.Address == withdraw.Address).Include(u => u.User).FirstOrDefaultAsync();
+            if (wallet == null || wallet.User.Id != GetId() || wallet.Balance < withdraw.Amount) return false;
+            wallet.Balance -= withdraw.Amount;
+
+            var trans = new Transaction();
+
+            trans.Type = Type.Debit;
+            trans.WalletId = wallet.Id;
+            trans.Amount = withdraw.Amount;
+            trans.Balance = wallet.Balance;
+            trans.Wallet = wallet;
+            _context.Transactions.Add(trans);
+            await _context.SaveChangesAsync();
+
+            return true;
+
         }
 
         public async Task<bool> TransferAsync(TransferDto tranfer)
