@@ -117,6 +117,13 @@ namespace WalletApp.Infrastructure.Repository
             return null;
         }
 
+        public async Task<List<Wallet>> GetListOfWallets() 
+        {
+            var currentWallet =await _context.Wallets.Where(x => x.UserId == GetId())
+                .AsNoTracking().ToListAsync();
+            return currentWallet;
+        }
+
         private void GenerateHash(string address, out byte[] AddressHash, out byte[] AddressKey)
         {
             

@@ -43,9 +43,9 @@ namespace WalletApp.Controllers
         }
 
         [HttpGet("/balance")]
-        public async Task<ActionResult<double>> GetBalance(string walletAddress)
+        public async Task<ActionResult<double>> GetBalance(string walletAddress, string currencyCode)
         {
-            var result = await _walletService.GetBalanceAsync(walletAddress);
+            var result = await _walletService.GetBalanceAsync(walletAddress, currencyCode);
             if(result!=null) return Ok(result);
             _logger.LogInformation("Unable to get balance");
             return BadRequest();

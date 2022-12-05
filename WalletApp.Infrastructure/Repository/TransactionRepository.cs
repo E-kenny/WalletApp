@@ -61,7 +61,6 @@ namespace WalletApp.Infrastructure.Repository
             var paginatedResult = result.Skip((page - 1) * (int)pageResults).Take((int)pageResults).ToList();
             await _context.SaveChangesAsync();
 
-            //return PagedList<Transaction>.ToPagedList(result, 5, 5 );
             return paginatedResult;
         }
     }
