@@ -50,5 +50,18 @@ namespace WalletApp.Controllers
             _logger.LogInformation("Unable to get balance");
             return BadRequest();
         }
+
+
+        [HttpGet("/getAllWallets")]
+        public async Task<ActionResult<double>> GetAllWallets()
+        {
+           var result = await _walletService.GetListOfWallets();
+            if(result!=null)return Ok(result);                           
+           
+            _logger.LogInformation("Unable to get list of wallets");
+            return BadRequest();
+        }
+
+
     }
 }

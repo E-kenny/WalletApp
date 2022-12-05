@@ -1,4 +1,5 @@
 ﻿using WalletApp.Models.DTO;
+using WalletApp.Models.Entities;
 
 namespace WalletApp.Abstractions.Repositories
 {
@@ -10,6 +11,7 @@ namespace WalletApp.Abstractions.Repositories
         public Task<bool> WithdrawAsync(double amount, WalletDTO walletDTO);
         public Task<bool> TransferAsync(TransferDto transfer);
         public Task<double?> GetBalanceAsync(string walletAddress);
+        public Task<List<Wallet>> GetListOfWallets();
 
     }
 }
