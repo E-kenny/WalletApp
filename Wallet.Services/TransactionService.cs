@@ -24,7 +24,7 @@ namespace WalletApp.Services
             _httpClientFactory = httpClientFactory;
         }
         
-        public async Task<double?> ConvertCurrency(string currencyA, string currencyB, double amount)
+        public async Task<double?> ConvertCurrencyAsync(string currencyA, string currencyB, double amount)
         {
                 try
                 {
@@ -50,7 +50,7 @@ namespace WalletApp.Services
                 }
 
         }
-        public async Task<double?> GetRate(string currencyCode, double amount)
+        public async Task<double?> GetRateAsync(string currencyCode, double amount)
         {
             try
             {
@@ -75,15 +75,28 @@ namespace WalletApp.Services
             }
         }
 
-        public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactions(WalletDTO model)
+        public async Task<IEnumerable<TransactionDTO>> GetAllUserTransactionsAsync()
         {
-           return await _transactionRepository.GetAllUserTransactions(WalletAppMapper.DTOToModel(model));
+            var result = await _transactionRepository.GetAllUserTransactionsAsync();
+            var allTransaction = new List<TransactionDTO>();
+
+            foreach (var items in result)
+            {
+                foreach (var item in items)
+                {
+                    allTransaction.Add(WalletAppMapper.TransactioToDTO(item));
+                }
+               
+            }
+
+
+            return allTransaction;
         }
 
         
-        public async Task<IEnumerable<TransactionDTO>> GetWalletStatement(string walletAddress)
+        public async Task<IEnumerable<TransactionDTO>> GetWalletStatementAsync(string walletAddress)
         {
-            var result = await _transactionRepository.GetWalletStatement(walletAddress);
+            var result = await _transactionRepository.GetWalletStatementAsync(walletAddress);
             var allTransaction = new List<TransactionDTO>();
             foreach (var item in result)
             {
