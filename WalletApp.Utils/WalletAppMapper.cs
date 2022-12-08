@@ -12,7 +12,7 @@ namespace WalletApp.Utils
             walletDTO.Address = model.Address;
             walletDTO.UserId = model.UserId;
             walletDTO.Balance = model.Balance;
-           
+
 
             return walletDTO;
         }

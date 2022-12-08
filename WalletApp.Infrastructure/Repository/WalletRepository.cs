@@ -9,7 +9,7 @@ using Type = WalletApp.Models.Entities.Type;
 
 namespace WalletApp.Infrastructure.Repository
 {
-    public class WalletRepository:IWalletRepository
+    public class WalletRepository : IWalletRepository
     {
         private readonly WalletDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -27,7 +27,7 @@ namespace WalletApp.Infrastructure.Repository
             var address = GenerateAddress();
             var user = await _context.Users.Where(u => u.Id == GetId()).FirstOrDefaultAsync();
             if (user == null) return "Failed";
-            GenerateHash(address,out byte[] AddressHash, out byte[] AddressKey);
+            GenerateHash(address, out byte[] AddressHash, out byte[] AddressKey);
             var wallet = new Wallet();
             wallet.UserId = user.Id;
             wallet.Address = address;
@@ -43,12 +43,12 @@ namespace WalletApp.Infrastructure.Repository
 
         public async Task<bool> DepositAsync(DepositDto deposit)
         {
-            var address = await _context.Wallets.Where(w => w.Address == deposit.Address).Include(u=>u.User).FirstOrDefaultAsync();
-            if(address == null || address.User.Id != GetId()) return false;
+            var address = await _context.Wallets.Where(w => w.Address == deposit.Address).Include(u => u.User).FirstOrDefaultAsync();
+            if (address == null || address.User.Id != GetId()) return false;
             address.Balance += deposit.Amount;
-            
+
             var trans = new Transaction();
-            
+
             trans.Type = Type.Credit;
             trans.WalletId = address.Id;
             trans.Amount = deposit.Amount;
@@ -87,7 +87,7 @@ namespace WalletApp.Infrastructure.Repository
             if (wallet == null || wallet.User.Id != GetId() || wallet2 == null || wallet.Balance < tranfer.Amount) return false;
             wallet.Balance -= tranfer.Amount;
             wallet2.Balance += tranfer.Amount;
-            
+
 
             var trans1 = new Transaction();
             trans1.Type = Type.Debit;
@@ -111,10 +111,10 @@ namespace WalletApp.Infrastructure.Repository
 
         public async Task<double?> GetBalanceAsync(string walletAddress)
         {
-           
+
             var balance = 0.0;
             var result = await _context.Wallets.Where(x => x.Address == walletAddress)
-                          .FirstOrDefaultAsync();  
+                          .FirstOrDefaultAsync();
 
             if (result != null && result.UserId == GetId())
             {
@@ -129,20 +129,20 @@ namespace WalletApp.Infrastructure.Repository
 
                 return null;
             }
-                      
+
             return null;
         }
 
-        public async Task<List<Wallet>> GetListOfWallets() 
+        public async Task<List<Wallet>> GetListOfWallets()
         {
-            var currentWallet =await _context.Wallets.Where(x => x.UserId == GetId())
+            var currentWallet = await _context.Wallets.Where(x => x.UserId == GetId())
                 .AsNoTracking().ToListAsync();
             return currentWallet;
         }
 
         private void GenerateHash(string address, out byte[] AddressHash, out byte[] AddressKey)
         {
-            
+
             using (var hash = new System.Security.Cryptography.HMACSHA512())
             {
                 AddressKey = hash.Key;

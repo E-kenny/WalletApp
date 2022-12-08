@@ -18,7 +18,7 @@ namespace WalletApp.Controllers
             _userService = userService;
         }
 
-        [HttpPost("Register")]
+         [HttpPost("Register")]
         public async Task<IActionResult> Register(UserDTO user)
         {
 
@@ -30,6 +30,7 @@ namespace WalletApp.Controllers
             _logger.LogInformation("Registration failed!");
             return BadRequest();    
         }
+       
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
@@ -38,7 +39,7 @@ namespace WalletApp.Controllers
             if (token != null) return Ok(token);
 
             _logger.LogInformation("Log in failed!");
-            return Problem();   
+            return Problem();
         }
 
 
