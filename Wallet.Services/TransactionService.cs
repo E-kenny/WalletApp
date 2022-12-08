@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Threading.Tasks;
 using WalletApp.Abstractions.Repositories;
 using WalletApp.Abstractions.Services;
@@ -23,33 +18,32 @@ namespace WalletApp.Services
             _transactionRepository = transactionRepository;
             _httpClientFactory = httpClientFactory;
         }
-        
+
         public async Task<double?> ConvertCurrencyAsync(string currencyA, string currencyB, double amount)
         {
-                try
+            try
+            {
+                string conversion_result = string.Empty;
+                var httpClient = _httpClientFactory.CreateClient();
+                var conversionStr = $"https://v6.exchangerate-api.com/v6/033ce5eb6f40fe61f7080372/pair/{currencyA}/{currencyB}/{amount}";
+                using (var response = await httpClient.GetAsync(conversionStr, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    string conversion_result = string.Empty;
-                    var httpClient = _httpClientFactory.CreateClient();
-                    var conversionStr = $"https://v6.exchangerate-api.com/v6/033ce5eb6f40fe61f7080372/pair/{currencyA}/{currencyB}/{amount}";
-                    using (var response = await httpClient.GetAsync(conversionStr, HttpCompletionOption.ResponseHeadersRead))
-                    {
-                        response.EnsureSuccessStatusCode();
-                        var stream = await response.Content.ReadAsStreamAsync();
-                        var newConvertDouble = await JsonSerializer.DeserializeAsync<ConvertDoubleDTO>(stream);
-                        var newAmount = newConvertDouble.conversion_result;
+                    response.EnsureSuccessStatusCode();
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var newConvertDouble = await JsonSerializer.DeserializeAsync<ConvertDoubleDTO>(stream);
+                    var newAmount = newConvertDouble.conversion_result;
 
 
-                        return newAmount;
-                    }
-
-                }
-                catch (Exception)
-                {
-                    return default;
-
+                    return newAmount;
                 }
 
+            }
+            catch (Exception)
+            {
+                return default;
+            }
         }
+
         public async Task<double?> GetRateAsync(string currencyCode, double? amount)
         {
             try
@@ -99,10 +93,8 @@ namespace WalletApp.Services
 
                 return null;
             }
-
         }
 
-        
         public async Task<IEnumerable<TransactionDTO>> GetWalletStatementAsync(string walletAddress, int page)
         {
             try
@@ -118,11 +110,8 @@ namespace WalletApp.Services
             }
             catch (Exception)
             {
-
                 return null;
             }
-           
         }
-    
     }
 }

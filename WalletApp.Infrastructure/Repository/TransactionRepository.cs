@@ -6,7 +6,7 @@ using WalletApp.Models.Entities;
 
 namespace WalletApp.Infrastructure.Repository
 {
-    public class TransactionRepository:ITransactionRepository
+    public class TransactionRepository : ITransactionRepository
     {
         private readonly WalletDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -21,7 +21,7 @@ namespace WalletApp.Infrastructure.Repository
 
         public async Task<IEnumerable<IEnumerable<Transaction>>> GetAllUserTransactionsAsync()
         {
-         
+
             var currentWallet = _context.Wallets.Where(x => x.UserId == GetId())
                .Include(s => s.User)
                .Include(e => e.Transactions)

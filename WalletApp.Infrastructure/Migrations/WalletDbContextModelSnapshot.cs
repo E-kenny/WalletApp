@@ -350,7 +350,7 @@ namespace WalletApp.Infrastructure.Migrations
             modelBuilder.Entity("WalletApp.Models.Entities.Wallet", b =>
                 {
                     b.HasOne("WalletApp.Models.Entities.User", "User")
-                        .WithMany("wallets")
+                        .WithMany("Wallets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -360,7 +360,7 @@ namespace WalletApp.Infrastructure.Migrations
 
             modelBuilder.Entity("WalletApp.Models.Entities.User", b =>
                 {
-                    b.Navigation("wallets");
+                    b.Navigation("Wallets");
                 });
 
             modelBuilder.Entity("WalletApp.Models.Entities.Wallet", b =>

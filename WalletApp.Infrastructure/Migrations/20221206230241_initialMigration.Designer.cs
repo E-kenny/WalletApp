@@ -12,8 +12,8 @@ using WalletApp.Infrastructure;
 namespace WalletApp.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
-    [Migration("20221204220724_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20221206230241_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -352,7 +352,7 @@ namespace WalletApp.Infrastructure.Migrations
             modelBuilder.Entity("WalletApp.Models.Entities.Wallet", b =>
                 {
                     b.HasOne("WalletApp.Models.Entities.User", "User")
-                        .WithMany("wallets")
+                        .WithMany("Wallets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -362,7 +362,7 @@ namespace WalletApp.Infrastructure.Migrations
 
             modelBuilder.Entity("WalletApp.Models.Entities.User", b =>
                 {
-                    b.Navigation("wallets");
+                    b.Navigation("Wallets");
                 });
 
             modelBuilder.Entity("WalletApp.Models.Entities.Wallet", b =>
